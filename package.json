@@ -1,0 +1,21 @@
+{
+  "name": "web-portfolio",
+  "version": "1.0.0",
+  "description": "This is my personal portfolio website. I'm Kelly Jao D. Quidit, an aspiring network engineer, and I'm studying for a BS in Information Technology (Network Design and Management) at Nueva Vizcaya State University.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npx @tailwindcss/cli -i ./css/input.css -o ./css/tailwind.css --watch",
+    "build": "npx @tailwindcss/cli -i ./css/input.css -o ./css/tailwind.css --minify"
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "devDependencies": {
+    "@fontsource/dm-sans": "^5.3.0",
+    "@fontsource/plus-jakarta-sans": "^5.3.0",
+    "@tailwindcss/cli": "^4.3.3",
+    "tailwindcss": "^4.3.3"
+  },
+  "allowScripts": {
+    "@parcel/watcher@2.5.1": true
+  }
+}

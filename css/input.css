@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+/* Self-hosted fonts (from the installed @fontsource packages) */
+@import "@fontsource/dm-sans/400.css";
+@import "@fontsource/dm-sans/500.css";
+@import "@fontsource/dm-sans/700.css";
+@import "@fontsource/plus-jakarta-sans/600.css";
+@import "@fontsource/plus-jakarta-sans/700.css";
+@import "@fontsource/plus-jakarta-sans/800.css";
+
+/* Make dark: classes follow your toggle (the .dark class on <html>) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Your fonts and colors (replaces tailwind-config.js) */
+@theme inline {
+  --font-heading: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+
+  --color-page: var(--bg);
+  --color-surface: var(--surface);
+  --color-ink: var(--text);
+  --color-muted: var(--muted);
+  --color-line: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-badge: var(--badge-bg);
+  --color-badge-hover: var(--badge-bg-hover);
+  --color-badge-ink: var(--badge-text);
+}
+
+/* v4 buttons default to the arrow cursor; restore the pointer */
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}

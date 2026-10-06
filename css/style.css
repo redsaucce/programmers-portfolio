@@ -1,0 +1,370 @@
+/* ==========================================================================
+   style.css: Kelly Jao D. Quidit portfolio
+   Load AFTER css/tailwind.css (the compiled Tailwind file). Tailwind handles
+   layout and spacing; this file only holds what utility classes do not cover.
+   In Tailwind v4, plain CSS like this beats utility classes, so the rules here
+   always win.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Design tokens
+   Accent is a modern royal blue (#2563eb). Change --accent and --accent-soft here
+   to restyle the whole site. The Tailwind colors in css/input.css (@theme inline)
+   point at these variables, so nothing else needs to change.
+   -------------------------------------------------------------------------- */
+:root {
+  /* Royal blue accent, off-white page, cool gray surfaces */
+  --accent: #2563eb;
+  --accent-soft: #dbeafe;
+
+  /* Badges / chips use their own lighter sky-blue shade */
+  --badge-bg: #e0f2fe;
+  --badge-bg-hover: #bae6fd;
+  --badge-text: #075985;
+
+  --bg: #f8f7f4;
+  --surface: #eef0f2;
+  --text: #1f2937;
+  --muted: #5b6472;
+  --border: #d8dbdf;
+
+  --nav-height: 4rem;
+  --radius: 0.75rem;
+}
+
+:root.dark {
+  --accent: #60a5fa;
+  --accent-soft: #172554;
+
+  --badge-bg: #0c4a6e;
+  --badge-bg-hover: #075985;
+  --badge-text: #7dd3fc;
+
+  --bg: #111418;
+  --surface: #1a1f26;
+  --text: #e5e7eb;
+  --muted: #9aa4b2;
+  --border: #2a313b;
+}
+
+/* Dark mode: the accent (#60a5fa) is too light for white text (about 2.5:1), so
+   filled accent buttons keep the stronger blue #2563eb with white text and icons
+   (5.2:1). Applies to the primary CTA, Live demo, Download CV, and back-to-top. */
+:root.dark .bg-accent,
+:root.dark .focus\:bg-accent:focus {
+  background-color: #2563eb;
+  color: #fff;
+}
+
+/* --------------------------------------------------------------------------
+   2. Base
+   -------------------------------------------------------------------------- */
+html {
+  /* reserve the scrollbar's space on every page so centered content (navbar,
+     footer) does not jump sideways between short and long pages */
+  scrollbar-gutter: stable;
+  scroll-behavior: smooth;
+  /* keeps anchor targets from hiding under a sticky navbar */
+  scroll-padding-top: var(--nav-height);
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+::selection {
+  background: var(--accent);
+  color: #ffffff;
+}
+
+/* Visible keyboard focus on every interactive element */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Shared components (js/components.js) are wrappers only: no box of their own,
+   so the sticky navbar and the footer behave as direct children of <body> */
+site-header,
+site-footer {
+  display: contents;
+}
+
+/* Lucide icons render as <svg>; keep them aligned with text */
+svg.lucide {
+  flex-shrink: 0;
+}
+
+/* --------------------------------------------------------------------------
+   3. Navbar
+   -------------------------------------------------------------------------- */
+.nav-link {
+  position: relative;
+  color: var(--muted);
+  transition: color 0.2s ease;
+}
+
+/* Keyboard focus looks the same as hover (color + underline), with no focus ring */
+.nav-link:hover,
+.nav-link:focus-visible {
+  color: var(--text);
+}
+
+.nav-link:focus-visible {
+  outline: none;
+}
+
+/* js/main.js adds .is-active to the link for the current page.
+   Do NOT change font-weight here: bolder text is wider, so the other links
+   would shift every time the active link changes. Color + underline only.
+   The underline slides in from the left on hover and on the active link. */
+.nav-link.is-active {
+  color: var(--accent);
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 2px;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+
+.nav-link:hover::after,
+.nav-link:focus-visible::after,
+.nav-link.is-active::after {
+  transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-link::after {
+    transition: none;
+  }
+}
+
+/* Windows high-contrast mode ignores colors, so keep a real outline there */
+@media (forced-colors: active) {
+  .nav-link:focus-visible,
+  .footer-link:focus-visible {
+    outline: 2px solid LinkText;
+  }
+}
+
+/* Mobile menu sheet (markup in js/components.js, behavior in js/main.js).
+   Full-screen, slides in from the left. js/main.js toggles .is-open and puts
+   html.menu-open on while it is open (locks page scroll). While closed it is
+   visibility:hidden, so it cannot be tabbed to or seen. md:hidden (Tailwind)
+   removes it from md up. */
+#mobile-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  overflow-y: auto;
+  transform: translateX(-100%);
+  visibility: hidden;
+  /* visibility waits for the slide-out to finish when closing */
+  transition: transform 0.3s ease, visibility 0s linear 0.3s;
+}
+
+#mobile-menu.is-open {
+  transform: translateX(0);
+  visibility: visible;
+  transition: transform 0.3s ease, visibility 0s;
+}
+
+html.menu-open {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #mobile-menu,
+  #mobile-menu.is-open {
+    transition: none;
+  }
+}
+
+/* Footer contact links (email, phone): no focus ring. Hover and keyboard focus
+   look the same: accent color plus an underline under the text. */
+.footer-link {
+  transition: color 0.2s ease;
+}
+
+.footer-link:hover,
+.footer-link:focus-visible {
+  color: var(--accent);
+}
+
+.footer-link:focus-visible {
+  outline: none;
+}
+
+.footer-link:hover span,
+.footer-link:focus-visible span {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* --------------------------------------------------------------------------
+   Scroll reveal: sections and cards fade up the first time they scroll into
+   view. js/main.js adds .reveal, then .is-visible, then removes both when the
+   animation ends (so normal hover transitions come back). "html" in the
+   selector makes these win over Tailwind's transition utilities.
+   -------------------------------------------------------------------------- */
+html .reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+html .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* --------------------------------------------------------------------------
+   Page entrance: on Home the pill, headline, role, tagline, buttons, and photo
+   fade up one after another; on About, Education, and Projects the title,
+   subtitle, and first block of content do (--i = 0, 1, 2). --i (set inline in index.html) is the order; each step
+   is 80ms later. It starts as soon as the page loads (the compiled Tailwind
+   CSS is in <head>, so nothing is hidden first). Off for reduced motion.
+   -------------------------------------------------------------------------- */
+@keyframes hero-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-in {
+    animation: hero-in 0.5s ease both;
+    animation-delay: calc(var(--i, 0) * 80ms);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   4. Education timeline
+   Markup: <ol class="timeline"><li class="timeline-item"><div>card...</div></li></ol>
+   -------------------------------------------------------------------------- */
+.timeline {
+  position: relative;
+  padding-left: 1.75rem;
+  border-left: 2px solid var(--border);
+}
+
+.timeline-item {
+  position: relative;
+  padding-bottom: 2.5rem;
+}
+
+.timeline-item:last-child {
+  padding-bottom: 0;
+}
+
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: calc(-1.75rem - 7px);
+  top: 0.35rem;
+  width: 12px;
+  height: 12px;
+  background: var(--bg);
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+}
+
+/* Education cards are styled with Tailwind classes in education.html */
+
+/* Timeline dot fills in when its card is hovered */
+.timeline-item::before {
+  transition: background-color 0.2s ease;
+}
+
+.timeline-item:hover::before {
+  background: var(--accent);
+}
+
+/* --------------------------------------------------------------------------
+   5. Project cards
+   Markup: <article class="project-card"><div class="project-media"><img></div>...
+   -------------------------------------------------------------------------- */
+.project-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+}
+
+.project-media {
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--accent-soft);
+}
+
+.project-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.project-card:hover .project-media img {
+  transform: scale(1.04);
+}
+
+/* --------------------------------------------------------------------------
+   6. Back-to-top button
+   js/main.js toggles .is-visible after scrolling down
+   -------------------------------------------------------------------------- */
+#back-to-top {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden; /* also removes it from tab order and screen readers while hidden */
+  transform: translateY(8px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0.2s;
+}
+
+#back-to-top.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+  transform: translateY(0);
+  transition-delay: 0s;
+}
+
+/* --------------------------------------------------------------------------
+   7. Accessibility: respect reduced-motion preference
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
