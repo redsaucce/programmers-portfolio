@@ -2,6 +2,8 @@
 
 This is my personal portfolio website. I'm Kelly Jao D. Quidit, an aspiring network engineer, and I'm studying for a BS in Information Technology (Network Design and Management) at Nueva Vizcaya State University.
 
+🔗 Live: https://redsaucce.github.io/programmers-portfolio/ (preview; will switch to the Vercel production URL once that is ready)
+
 I built it with plain HTML, Tailwind CSS v4 (compiled with the Tailwind CLI), and vanilla JavaScript. There is no framework. Node.js is needed once to install Tailwind and build the stylesheet (`css/tailwind.css`); after that, the site is plain static files.
 
 ## Pages
@@ -51,6 +53,7 @@ web-portfolio/
 │   └── main.js              theme, menu, nav, animations
 ├── .gitignore               node_modules/
 ├── about.html
+├── deployment-guide.md
 ├── education.html
 ├── index.html
 ├── package-lock.json        created by npm install
@@ -99,14 +102,14 @@ Copy one `<article>` block in `projects.html`, then change the image, title, des
 
 ## Deploy
 
-The site is static, so it can be hosted for free. Run `npm run build` and commit `css/tailwind.css` first (`node_modules/` stays out of the repository), so the host needs no build step:
+Step-by-step instructions are in `deployment-guide.md`. In short: the site is static, so it can be hosted for free. Run `npm run build` and commit `css/tailwind.css` first (`node_modules/` stays out of the repository), so the host needs no build step:
 
 - **GitHub Pages:** push to a GitHub repository, then turn on Pages in the repository settings (deploy from the main branch).
 - **Netlify or Vercel:** drag and drop the project folder, or connect the repository.
 
 ## To do before publishing
 
-- Replace the placeholder `#` links: GitHub and LinkedIn in the footer (`SITE.socials`), and the two Web Portfolio buttons in `projects.html`
+- Replace the placeholder `#` links: GitHub and LinkedIn in the footer (`SITE.socials`); both Web Portfolio project links are set
 - Review the networking skills list on the About page
 - Test on a real phone, tablet, and desktop
 
